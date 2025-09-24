@@ -1,0 +1,7 @@
+{
+  "name": "IntelliFlow Hub Financeiro",
+  "description": "Uma plataforma inteligente de gerenciamento de processos financeiros que automatiza o reembolso de despesas, ordens de compra e fornece painéis perspicazes para gerentes e equipes financeiras, impulsionada por IA generativa.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
