@@ -8,7 +8,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
-  const navItems = [
+  // Fix: Specify a more precise type for navItems to ensure item.role is assignable to setActiveView.
+  const navItems: { role: UserRole.MANAGER | UserRole.FINANCE; label: string; icon: JSX.Element }[] = [
     { role: UserRole.MANAGER, label: 'Gestor', icon: <ManagerIcon className="w-5 h-5"/> },
     { role: UserRole.FINANCE, label: 'Financeiro', icon: <FinanceIcon className="w-5 h-5"/> },
   ];

@@ -3,7 +3,6 @@ import { FinancialDataContextType } from '../hooks/useFinancialData';
 import { ExpenseType, ExpenseRequest, PurchaseRequest, PaymentRequest, PurchaseItem } from '../types';
 import { EXPENSE_TYPES, POLICY_LIMIT, MOCK_CURRENT_USER } from '../constants';
 import { geminiService } from '../services/geminiService';
-// Fix: Import XCircleIcon to resolve missing component error.
 import { SparklesIcon, UploadIcon, CheckCircleIcon, CreditCardIcon, ShoppingCartIcon, UserIcon, XCircleIcon } from '../components/icons';
 import MyRequestListItem from '../components/MyRequestListItem';
 
@@ -64,8 +63,13 @@ const ExpenseForm: React.FC<{ context: FinancialDataContextType }> = ({ context 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        // Fix: Explicitly map MOCK_CURRENT_USER properties to the required `employeeName` and `employeeId` fields.
         const newRequest: Omit<ExpenseRequest, 'id' | 'submittedDate' | 'status' | 'requestType'> = {
-            ...MOCK_CURRENT_USER.EMPLOYEE, ...formState, amount: parseFloat(formState.amount),
+            employeeName: MOCK_CURRENT_USER.EMPLOYEE.name,
+            employeeId: MOCK_CURRENT_USER.EMPLOYEE.id,
+            department: MOCK_CURRENT_USER.EMPLOYEE.department,
+            ...formState, 
+            amount: parseFloat(formState.amount),
         };
         context.addExpenseRequest(newRequest);
         setTimeout(() => {
@@ -121,7 +125,8 @@ const PurchaseForm: React.FC<{ context: FinancialDataContextType }> = ({ context
     const defaultFormState = { title: '', supplier: '', costCenter: '' };
 
     const [formState, setFormState] = useState(defaultFormState);
-    const [items, setItems] = useState<Omit<PurchaseItem, 'price'> & { price: string }>([defaultItem]);
+    // Fix: Correctly type the `items` state as an array of objects to resolve multiple compilation errors.
+    const [items, setItems] = useState<(Omit<PurchaseItem, 'price'> & { price: string })[]>([defaultItem]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
@@ -159,8 +164,11 @@ const PurchaseForm: React.FC<{ context: FinancialDataContextType }> = ({ context
             price: parseFloat(item.price),
         }));
 
+        // Fix: Explicitly map MOCK_CURRENT_USER properties to the required `employeeName` and `employeeId` fields.
         const newRequest: Omit<PurchaseRequest, 'id' | 'submittedDate' | 'status' | 'requestType'> = {
-            ...MOCK_CURRENT_USER.EMPLOYEE,
+            employeeName: MOCK_CURRENT_USER.EMPLOYEE.name,
+            employeeId: MOCK_CURRENT_USER.EMPLOYEE.id,
+            department: MOCK_CURRENT_USER.EMPLOYEE.department,
             ...formState,
             items: purchaseItems,
             totalAmount,
@@ -249,8 +257,11 @@ const PaymentForm: React.FC<{ context: FinancialDataContextType }> = ({ context 
         e.preventDefault();
         setIsSubmitting(true);
         
+        // Fix: Explicitly map MOCK_CURRENT_USER properties to the required `employeeName` and `employeeId` fields.
         const newRequest: Omit<PaymentRequest, 'id' | 'submittedDate' | 'status' | 'requestType'> = {
-            ...MOCK_CURRENT_USER.EMPLOYEE,
+            employeeName: MOCK_CURRENT_USER.EMPLOYEE.name,
+            employeeId: MOCK_CURRENT_USER.EMPLOYEE.id,
+            department: MOCK_CURRENT_USER.EMPLOYEE.department,
             ...formState,
             amount: parseFloat(formState.amount),
         };
